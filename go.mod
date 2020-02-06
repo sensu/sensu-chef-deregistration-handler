@@ -1,4 +1,4 @@
-module github.com/sensu/sensu-chef-handler
+module github.com/sensu/sensu-chef-deregistration-handler
 
 go 1.13
 

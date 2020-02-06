@@ -1,1 +1,1 @@
-# sensu-chef-handler
+# sensu-chef-deregistration-handler
