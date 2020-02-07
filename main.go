@@ -54,10 +54,10 @@ func (c *ConfigOptions) AsSlice() []*sensu.PluginConfigOption {
 var (
 	handlerConfig = HandlerConfig{
 		PluginConfig: sensu.PluginConfig{
-			Name:     "sensu-chef-deregistration-handler",
-			Short:    "A Chef deregistration handler for Sensu",
+			Name:     "sensu-chef-keepalive-handler",
+			Short:    "A Chef keepalive handler for Sensu",
 			Timeout:  10,
-			Keyspace: "sensu.io/plugins/sensu-chef-deregistration-handler/config",
+			Keyspace: "sensu.io/plugins/sensu-chef-keepalive-handler/config",
 		},
 	}
 
