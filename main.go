@@ -18,7 +18,6 @@ type HandlerConfig struct {
 	sensu.PluginConfig
 
 	Endpoint      string
-	Flavor        string
 	ClientName    string
 	ClientKeyPath string
 	SSLPemPath    string
@@ -30,7 +29,6 @@ type HandlerConfig struct {
 
 type ConfigOptions struct {
 	Endpoint      sensu.PluginConfigOption
-	Flavor        sensu.PluginConfigOption
 	ClientName    sensu.PluginConfigOption
 	ClientKeyPath sensu.PluginConfigOption
 	SSLPemPath    sensu.PluginConfigOption
@@ -43,7 +41,6 @@ type ConfigOptions struct {
 func (c *ConfigOptions) AsSlice() []*sensu.PluginConfigOption {
 	return []*sensu.PluginConfigOption{
 		&handlerConfigOptions.Endpoint,
-		&handlerConfigOptions.Flavor,
 		&handlerConfigOptions.ClientName,
 		&handlerConfigOptions.ClientKeyPath,
 		&handlerConfigOptions.SSLPemPath,
@@ -73,17 +70,9 @@ var (
 			Usage:     "The Chef Server API endpoint (URL)",
 			Value:     &handlerConfig.Endpoint,
 		},
-		Flavor: sensu.PluginConfigOption{
-			Path:      "flavor",
-			Env:       "CHEF_FLAVOR",
-			Argument:  "flavor",
-			Shorthand: "f",
-			Usage:     "The Chef Server flavor (enterprise or open_source)",
-			Value:     &handlerConfig.Endpoint,
-		},
 		ClientName: sensu.PluginConfigOption{
 			Path:      "client-name",
-			Env:       "CHEF_CLIENT",
+			Env:       "CHEF_CLIENT_NAME",
 			Argument:  "client-name",
 			Shorthand: "c",
 			Usage:     "The Chef Client name to use when authenticating/querying the Chef Server API",
