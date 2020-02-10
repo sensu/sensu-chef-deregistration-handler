@@ -1,4 +1,4 @@
-module github.com/sensu/sensu-chef-keepalive-handler
+module github.com/sensu/sensu-chef-handler
 
 go 1.13
 
