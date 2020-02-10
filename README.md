@@ -1,7 +1,7 @@
-[![Bonsai Asset Badge](https://img.shields.io/badge/Sensu%20Chef%20Keepalive%20Handler-Download%20Me-brightgreen.svg?colorB=89C967&logo=sensu)](https://bonsai.sensu.io/assets/sensu/sensu-chef-keepalive-handler)
-![Go Test](https://github.com/sensu/sensu-chef-keepalive-handler/workflows/Go%20Test/badge.svg)
+[![Bonsai Asset Badge](https://img.shields.io/badge/Sensu%20Chef%20Handler-Download%20Me-brightgreen.svg?colorB=89C967&logo=sensu)](https://bonsai.sensu.io/assets/sensu/sensu-chef-handler)
+![Go Test](https://github.com/sensu/sensu-chef-handler/workflows/Go%20Test/badge.svg)
 
-# Sensu Chef Keepalive Handler
+# Sensu Chef Handler
 
 - [Overview](#overview)
 - [Usage examples](#usage-examples)
@@ -14,7 +14,7 @@
 
 ## Overview
 
-The [Sensu Chef Keepalive Handler][0] is a [Sensu Event Handler][3] that will
+The [Sensu Chef Handler][0] is a [Sensu Event Handler][3] that will
 delete an entity with a failing keepalive check when its corresponding [Chef][2]
 node no longer exists.
 
@@ -24,8 +24,8 @@ Help:
 
 ```
 Usage:
-  sensu-chef-keepalive-handler [flags]
-  sensu-chef-keepalive-handler [command]
+  sensu-chef-handler [flags]
+  sensu-chef-handler [command]
 
 Available Commands:
   help        Help about any command
@@ -36,7 +36,7 @@ Flags:
   -c, --client-name string       The Chef Client name to use when authenticating/querying the Chef Server API
   -e, --endpoint string          The Chef Server API endpoint (URL)
   -f, --flavor string            The Chef Server flavor (enterprise or open_source)
-  -h, --help                     help for sensu-chef-keepalive-handler
+  -h, --help                     help for sensu-chef-handler
       --sensu-api-key string     The Sensu API key
       --sensu-api-url string     The Sensu API URL (default "http://localhost:8080")
       --sensu-ca-cert string     The Sensu Go CA Certificate
@@ -50,11 +50,11 @@ Flags:
 
 Assets are the best way to make use of this handler. If you're not using an asset, please consider doing so! If you're using sensuctl 5.13 or later, you can use the following command to add the asset:
 
-`sensuctl asset add sensu/sensu-chef-keepalive-handler`
+`sensuctl asset add sensu/sensu-chef-handler`
 
 If you're using an earlier version of sensuctl, you can download the asset
 definition from [this project's Bonsai Asset Index
-page](https://bonsai.sensu.io/assets/sensu/sensu-chef-keepalive-handler).
+page](https://bonsai.sensu.io/assets/sensu/sensu-chef-handler).
 
 ### Handler definition
 
@@ -66,10 +66,10 @@ api_version: core/v2
 type: Handler
 metadata:
   namespace: default
-  name: sensu-chef-keepalive-handler
+  name: sensu-chef-handler
 spec:
   type: pipe
-  command: sensu-chef-keepalive-handler
+  command: sensu-chef-handler
   timeout: 10
   env_vars:
   - CHEF_ENDPOINT=https://api.chef.io/organizations/replace-me
@@ -80,7 +80,7 @@ spec:
   filters:
   - is_incident
   runtime_assets:
-  - sensu/sensu-chef-keepalive-handler
+  - sensu/sensu-chef-handler
 ```
 
 and then add the handler to the keepalive handler set:
@@ -94,7 +94,7 @@ metadata:
   namespace: default
 spec:
   handlers:
-  - sensu-chef-keepalive-handler
+  - sensu-chef-handler
   type: set
 ```
 
@@ -106,20 +106,20 @@ events after it is added to the keepalive handler set.
 
 ## Installing from source and contributing
 
-Download the latest version of the sensu-chef-keepalive-handler from [releases][4],
+Download the latest version of the sensu-chef-handler from [releases][4],
 or create an executable script from this source.
 
 ### Compiling
 
-From the local path of the sensu-chef-keepalive-handler repository:
+From the local path of the sensu-chef-handler repository:
 ```
 go build -o /usr/local/bin/ .
 ```
 
 To contribute to this plugin, see [CONTRIBUTING](https://github.com/sensu/sensu-go/blob/master/CONTRIBUTING.md)
 
-[0]: https://github.com/sensu/sensu-chef-keepalive-handler
+[0]: https://github.com/sensu/sensu-chef-handler
 [1]: https://github.com/sensu/sensu-go
 [2]: https://chef.io
 [3]: https://docs.sensu.io/sensu-go/latest/reference/handlers/#how-do-sensu-handlers-work
-[4]: https://github.com/sensu/sensu-chef-keepalive-handler/releases
+[4]: https://github.com/sensu/sensu-chef-handler/releases
