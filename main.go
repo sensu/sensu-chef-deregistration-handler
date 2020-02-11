@@ -20,6 +20,7 @@ type HandlerConfig struct {
 	Endpoint      string
 	ClientName    string
 	ClientKeyPath string
+	NodeName      string
 	SSLPemPath    string
 	SSLVerify     bool
 	SensuAPIURL   string
@@ -31,6 +32,7 @@ type ConfigOptions struct {
 	Endpoint      sensu.PluginConfigOption
 	ClientName    sensu.PluginConfigOption
 	ClientKeyPath sensu.PluginConfigOption
+	NodeName      sensu.PluginConfigOption
 	SSLPemPath    sensu.PluginConfigOption
 	SSLVerify     sensu.PluginConfigOption
 	SensuAPIURL   sensu.PluginConfigOption
@@ -43,6 +45,7 @@ func (c *ConfigOptions) AsSlice() []*sensu.PluginConfigOption {
 		&handlerConfigOptions.Endpoint,
 		&handlerConfigOptions.ClientName,
 		&handlerConfigOptions.ClientKeyPath,
+		&handlerConfigOptions.NodeName,
 		&handlerConfigOptions.SSLPemPath,
 		&handlerConfigOptions.SSLVerify,
 		&handlerConfigOptions.SensuAPIURL,
@@ -56,7 +59,6 @@ var (
 		PluginConfig: sensu.PluginConfig{
 			Name:     "sensu-chef-handler",
 			Short:    "A Chef keepalive handler for Sensu",
-			Timeout:  10,
 			Keyspace: "sensu.io/plugins/sensu-chef-handler/config",
 		},
 	}
@@ -85,6 +87,13 @@ var (
 			Shorthand: "k",
 			Usage:     "The path to the Chef Client key to use when authenticating/querying the Chef Server API",
 			Value:     &handlerConfig.ClientKeyPath,
+		},
+		NodeName: sensu.PluginConfigOption{
+			Path:     "node-name",
+			Env:      "CHEF_NODE_NAME",
+			Argument: "node-name",
+			Usage:    "node name to use for the entity when querying Chef",
+			Value:    &handlerConfig.NodeName,
 		},
 		SSLPemPath: sensu.PluginConfigOption{
 			Path:      "ssl-pem-path",
@@ -192,7 +201,14 @@ func executeHandler(event *types.Event) error {
 }
 
 func chefNodeName(event *types.Event) string {
-	return event.Entity.Name
+	// Determine the Chef node name via the annotations and fallback to the
+	// entity name
+	name := handlerConfig.NodeName
+	if name == "" {
+		name = event.Entity.Name
+	}
+
+	return name
 }
 
 func chefNodeExists(nodeName string) (bool, error) {
