@@ -37,6 +37,7 @@ Flags:
   -e, --endpoint string          The Chef Server API endpoint (URL)
   -f, --flavor string            The Chef Server flavor (enterprise or open_source)
   -h, --help                     help for sensu-chef-handler
+      --node-name string         The Chef node name to use for the entity when querying Chef
       --sensu-api-key string     The Sensu API key
       --sensu-api-url string     The Sensu API URL (default "http://localhost:8080")
       --sensu-ca-cert string     The Sensu Go CA Certificate
@@ -103,6 +104,18 @@ spec:
 
 No check definition is needed. This handler will only trigger on keepalive
 events after it is added to the keepalive handler set.
+
+### Chef node name
+
+When querying Chef for a node, by default, Sensu will use the Sensu entity’s
+name for the Chef node name. Individual Sensu entities can override the name of
+their corresponding Chef node, using annotations:
+
+```yml
+# /etc/sensu/agent.yml example
+annotations:
+  sensu.io/plugins/sensu-chef-handler/config/node-name: webserver01.example.com
+```
 
 ## Installing from source and contributing
 
