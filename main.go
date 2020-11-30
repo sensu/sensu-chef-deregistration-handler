@@ -11,9 +11,10 @@ import (
 	"github.com/go-chef/chef"
 	"github.com/sensu-community/sensu-plugin-sdk/httpclient"
 	"github.com/sensu-community/sensu-plugin-sdk/sensu"
-	"github.com/sensu/sensu-go/types"
+	corev2 "github.com/sensu/sensu-go/api/core/v2"
 )
 
+// HandlerConfig is a handler config
 type HandlerConfig struct {
 	sensu.PluginConfig
 
@@ -28,6 +29,7 @@ type HandlerConfig struct {
 	SensuCACert   string
 }
 
+// ConfigOptions is the config options
 type ConfigOptions struct {
 	Endpoint      sensu.PluginConfigOption
 	ClientName    sensu.PluginConfigOption
@@ -40,6 +42,7 @@ type ConfigOptions struct {
 	SensuCACert   sensu.PluginConfigOption
 }
 
+// AsSlice returns the plugin config options as a slice
 func (c *ConfigOptions) AsSlice() []*sensu.PluginConfigOption {
 	return []*sensu.PluginConfigOption{
 		&handlerConfigOptions.Endpoint,
@@ -92,7 +95,7 @@ var (
 			Path:     "node-name",
 			Env:      "CHEF_NODE_NAME",
 			Argument: "node-name",
-			Usage:    "node name to use for the entity when querying Chef",
+			Usage:    "The Chef node name to use for the entity when querying Chef",
 			Value:    &handlerConfig.NodeName,
 		},
 		SSLPemPath: sensu.PluginConfigOption{
@@ -142,7 +145,7 @@ func main() {
 	handler.Execute()
 }
 
-func checkArgs(event *types.Event) error {
+func checkArgs(event *corev2.Event) error {
 	if event.Check.Name != "keepalive" {
 		return errors.New("only keepalive events will be processed by this handler")
 	}
@@ -180,7 +183,7 @@ func checkArgs(event *types.Event) error {
 	return nil
 }
 
-func executeHandler(event *types.Event) error {
+func executeHandler(event *corev2.Event) error {
 	nodeName := chefNodeName(event)
 
 	nodeExists, err := chefNodeExists(nodeName)
@@ -200,7 +203,7 @@ func executeHandler(event *types.Event) error {
 	return nil
 }
 
-func chefNodeName(event *types.Event) string {
+func chefNodeName(event *corev2.Event) string {
 	// Determine the Chef node name via the annotations and fallback to the
 	// entity name
 	name := handlerConfig.NodeName
@@ -252,7 +255,7 @@ func chefNodeExists(nodeName string) (bool, error) {
 	return true, nil
 }
 
-func removeSensuEntity(event *types.Event) error {
+func removeSensuEntity(event *corev2.Event) error {
 	config := httpclient.CoreClientConfig{
 		URL:    handlerConfig.SensuAPIURL,
 		APIKey: handlerConfig.SensuAPIKey,
