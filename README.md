@@ -37,7 +37,7 @@ Flags:
   -e, --endpoint string          The Chef Server API endpoint (URL)
   -f, --flavor string            The Chef Server flavor (enterprise or open_source)
   -h, --help                     help for sensu-chef-handler
-      --node-name string         node name to use for the entity when querying Chef
+      --node-name string         The Chef node name to use for the entity when querying Chef
       --sensu-api-key string     The Sensu API key
       --sensu-api-url string     The Sensu API URL (default "http://localhost:8080")
       --sensu-ca-cert string     The Sensu Go CA Certificate
